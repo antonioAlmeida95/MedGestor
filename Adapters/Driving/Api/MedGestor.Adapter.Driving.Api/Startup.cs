@@ -1,8 +1,11 @@
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 using MedGestor.Adapter.Driven.Database;
 using MedGestor.Core.Application;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MedGestor.Adapter.Driving.Api;
 
@@ -39,7 +42,7 @@ public class Startup
         services.AddMedGestorDatabaseModule(Configuration);
         
         //Injeção de Dependecias Core
-        services.AddMedGestorApplicationModule();
+        services.AddMedGestorApplicationModule(Configuration);
         
         services.AddHttpClient();
         services.AddSwaggerGen(options =>
@@ -55,6 +58,32 @@ public class Startup
                     Url = new Uri("https://github.com/LucasStark95")
                 }
             });
+            
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description =
+                    "JWT Authorization Header - utilizado com Bearer Authentication.\n",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
 
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -63,6 +92,25 @@ public class Startup
 
         services.AddControllers()
             .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+        
+        var secretKey = Configuration.GetSection("Credentials:Secret:SecretKey").Value ?? string.Empty;
+        services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
     }
     
     /// <summary>
@@ -86,7 +134,9 @@ public class Startup
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "Documentação Api");
         });
 
+        app.UseAuthentication();
         app.UseRouting();
+        app.UseAuthorization();
         app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
 }

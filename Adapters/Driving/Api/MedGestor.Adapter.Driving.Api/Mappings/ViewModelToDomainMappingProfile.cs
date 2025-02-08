@@ -16,9 +16,12 @@ public class ViewModelToDomainMappingProfile : Profile
                 des.Id = src.AgendaId;
             });;
 
-        CreateMap<IncluirMedicoViewModel, Medico>();
-        CreateMap<IncluirPacienteViewModel, Paciente>();
+        CreateMap<IncluirMedicoViewModel, Medico>()
+            .ForMember(s => s.Status, opt => opt.MapFrom(src => true));
+        CreateMap<IncluirPacienteViewModel, Paciente>()
+            .ForMember(s => s.Status, opt => opt.MapFrom(src => true));
         CreateMap<PessoaViewModel, Pessoa>();
-        CreateMap<UsuarioViewModel, Usuario>();
+        CreateMap<UsuarioViewModel, Usuario>()
+            .ForMember(s => s.Status, opt => opt.MapFrom(src => true));
     }
 }

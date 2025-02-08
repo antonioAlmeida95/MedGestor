@@ -1,5 +1,6 @@
 using MedGestor.Adapter.Driving.Api.AppService.Interfaces;
 using MedGestor.Adapter.Driving.Api.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ public class AgendaController : ControllerBase
     
     [HttpGet]
     [Route("PorId/{id:guid}")]
+    [Authorize(Roles = "0,4")]
     [ProducesResponseType(typeof(Ok<AgendaViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(NotFound), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
@@ -28,6 +30,7 @@ public class AgendaController : ControllerBase
     
     [HttpGet]
     [Route("PorMedicoId/{medicoId:guid}")]
+    [Authorize(Roles = "0,4")]
     [ProducesResponseType(typeof(Ok<AgendaViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(NotFound), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPorMedicoId([FromRoute] Guid medicoId)
@@ -38,6 +41,7 @@ public class AgendaController : ControllerBase
     
     [HttpPost]
     [Route("Cadastrar")]
+    [Authorize(Roles = "0,5")]
     [ProducesResponseType(typeof(Ok<bool>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Post([FromBody] IEnumerable<IncluirAgendaViewModel> agendaViewModel)
@@ -52,6 +56,7 @@ public class AgendaController : ControllerBase
     
     [HttpPut]
     [Route("Atualizar")]
+    [Authorize(Roles = "0,5")]
     [ProducesResponseType(typeof(Ok<bool>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Put([FromBody] AtualizarAgendaViewModel atualizarAgendaViewModel)
@@ -65,6 +70,7 @@ public class AgendaController : ControllerBase
     
     [HttpDelete]
     [Route("Remover/{id:guid}")]
+    [Authorize(Roles = "0,6")]
     [ProducesResponseType(typeof(Ok<bool>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete([FromRoute] Guid id)

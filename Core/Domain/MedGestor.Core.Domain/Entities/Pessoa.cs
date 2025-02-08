@@ -10,7 +10,7 @@ public class Pessoa : EntidadeBase<Pessoa>
     public DateTimeOffset DataNascimento { get; }
     public Genero Genero { get; }
 
-    public Guid PerfilId { get; set; }
+    public Guid PerfilId { get; private set; }
     public virtual Perfil Perfil { get; set; }
 
     public Guid UsuarioId { get; set; }
@@ -18,6 +18,8 @@ public class Pessoa : EntidadeBase<Pessoa>
 
     public virtual Medico Medico { get; set; }
     public virtual Paciente Paciente { get; set; }
+
+    public void AlterarPerfilId(Guid perfilId) => PerfilId = perfilId;
 
     public Pessoa(string nome, string documento, DateTimeOffset dataNascimento, Genero genero, Guid? id = null)
     {

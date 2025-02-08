@@ -1,5 +1,6 @@
 using MedGestor.Adapter.Driving.Api.AppService.Interfaces;
 using MedGestor.Adapter.Driving.Api.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ public class PacienteController : ControllerBase
     
     [HttpPost]
     [Route("Cadastrar")]
+    [Authorize(Roles = "0")]
     [ProducesResponseType(typeof(Ok<bool>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Post([FromBody] IncluirPacienteViewModel incluirPacienteViewModel)

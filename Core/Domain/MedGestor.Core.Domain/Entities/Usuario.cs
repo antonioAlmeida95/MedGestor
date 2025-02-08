@@ -9,9 +9,9 @@ public class Usuario : EntidadeBase<Usuario>
     public string Email { get; }
 
     [MaxLength(100)]
-    public string Senha { get; }
+    public string Senha { get; private set; }
 
-    public bool Status { get; }
+    public bool Status { get; private set;  }
     
     public virtual Pessoa Pessoa { get; set; }
 
@@ -22,6 +22,8 @@ public class Usuario : EntidadeBase<Usuario>
         Senha = senha;
         Status = status;
     }
+
+    public void AlterarSenha(string senha) => Senha = senha;
 
     public Usuario(string email, string senha) : this(email, senha, false) { }
 
