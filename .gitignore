@@ -676,3 +676,5 @@ fabric.properties
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,rider,visualstudiocode,visualstudio
+/.idea/.idea.MedGestor/.idea/.gitignore
+/.idea/.idea.MedGestor/.idea/*.xml
