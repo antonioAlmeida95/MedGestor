@@ -30,8 +30,11 @@ public class AgendaRepository : BaseRepository, IAgendaRepository
     public async Task<IList<Agenda>> ObterListagemAgendaPorFiltroAsync(Expression<Func<Agenda, bool>> predicate,
         int? take = null, int? skip = null, bool track = false)
         => take is not null && skip is not null
-            ? await Query(predicate, track: track, take: take, skip: skip).ToListAsync()
-            : await Query(predicate, track: track).ToListAsync();
+            ? await Query(predicate, track: track, take: take, skip: skip,
+                include: i => i.Include(m => m.Medico).ThenInclude(p => p.Pessoa))
+                .ToListAsync()
+            : await Query(predicate, track: track,  include: i => i.Include(m => m.Medico)
+                .ThenInclude(p => p.Pessoa)).ToListAsync();
 
     public async Task<bool> AtualizarAgenda(Agenda agenda)
     {

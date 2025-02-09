@@ -7,19 +7,19 @@ public class Medico : EntidadeBase<Medico>
 {
     [Required]
     [MaxLength(10)]
-    public string Crm { get; }
+    public string Crm { get; private set;  }
     
     [Required]
     [MaxLength(15)]
-    public string Telefone { get; }
+    public string Telefone { get; private set;}
 
     [Required]
     [MaxLength(50)]
-    public string Especialidade { get; }
+    public string Especialidade { get; private set; }
 
-    public bool Status { get; }
+    public bool Status { get; private set; }
     
-    public Guid PessoaId { get; set; }
+    public Guid PessoaId { get; private set; }
     public virtual Pessoa Pessoa { get; set; }
 
     public ICollection<Agenda> Agendas { get; set; } = [];

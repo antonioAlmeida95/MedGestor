@@ -4,23 +4,22 @@ namespace MedGestor.Core.Domain.Entities;
 
 public class Paciente : EntidadeBase<Paciente>
 {
-    public decimal Peso { get; }
-    public decimal Altura { get; }
-
-    public bool Status { get; }
+    public decimal Peso { get; private set;}
+    public decimal Altura { get; private set;}
     
-    public Guid PessoaId { get; set; }
+    public Guid PessoaId { get; private set;}
     public virtual Pessoa Pessoa { get; set; }
+    
+    public ICollection<Consulta> Consultas { get; set; } = [];
 
-    public Paciente(decimal peso, decimal altura, bool status = false, Guid? id = null)
+    public Paciente(decimal peso, decimal altura, Guid? id = null)
     {
         Id = id ?? Guid.NewGuid();
         Peso = peso;
         Altura = altura;
-        Status = status;
     }
     
-    public Paciente(decimal peso, decimal altura): this(peso, altura, false){}
+    public Paciente(decimal peso, decimal altura): this(peso, altura, null){}
     
     public Paciente(){ }
     

@@ -7,21 +7,23 @@ namespace MedGestor.Core.Domain.Entities;
 public class Agenda : EntidadeBase<Agenda>
 {
     [Required]
-    public DateTimeOffset DataInicio { get; }
+    public DateTimeOffset DataInicio { get; private set;  }
 
-    public DateTimeOffset DataFim { get; }
+    public DateTimeOffset DataFim { get; private set; }
     
     [Required]
-    public int Duracao { get; }
+    public int Duracao { get; private set; }
     
     [Required]
-    public Dia Dia { get; }
+    public Dia Dia { get; private set; }
 
-    public decimal Valor { get; }
+    public decimal Valor { get; private set; }
 
     [Required]
     public Guid MedicoId { get; private set; }
     public virtual Medico Medico { get; set; }
+
+    public ICollection<Consulta> Consultas { get; set; } = [];
 
     public void AlterarMedicoId(Guid medicoId) => MedicoId = medicoId;
 

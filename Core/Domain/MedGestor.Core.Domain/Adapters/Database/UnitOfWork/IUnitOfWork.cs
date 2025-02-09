@@ -9,4 +9,5 @@ public interface IUnitOfWork
     IPacienteRepository Paciente { get; }
     IPerfilRepository Perfil { get; }
     IPessoaRepository Pessoa { get; }
+    IConsultaRepository Consulta { get; }
 }

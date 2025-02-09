@@ -30,6 +30,7 @@ public static class MedGestorDatabaseDependency
         services.AddScoped<IPacienteRepository, PacienteRepository>();
         services.AddScoped<IPerfilRepository, PerfilRepository>();
         services.AddScoped<IPessoaRepository, PessoaRepository>();
+        services.AddScoped<IConsultaRepository, ConsultaRepositoy>();
     }
     
     private static string? GetConnectionString(IConfiguration configuration)

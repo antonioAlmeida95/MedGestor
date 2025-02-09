@@ -11,4 +11,5 @@ public class UnitOfWork(IServiceProvider serviceProvider) : IUnitOfWork
     public IPacienteRepository Paciente => serviceProvider.GetRequiredService<IPacienteRepository>();
     public IPerfilRepository Perfil => serviceProvider.GetRequiredService<IPerfilRepository>();
     public IPessoaRepository Pessoa => serviceProvider.GetRequiredService<IPessoaRepository>();
+    public IConsultaRepository Consulta => serviceProvider.GetRequiredService<IConsultaRepository>();
 }

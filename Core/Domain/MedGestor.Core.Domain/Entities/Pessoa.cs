@@ -5,15 +5,15 @@ namespace MedGestor.Core.Domain.Entities;
 
 public class Pessoa : EntidadeBase<Pessoa>
 {
-    public string Nome { get; }
-    public string Documento { get; }
-    public DateTimeOffset DataNascimento { get; }
-    public Genero Genero { get; }
+    public string Nome { get; private set;}
+    public string Documento { get; private set;}
+    public DateTimeOffset DataNascimento { get; private set;}
+    public Genero Genero { get; private set;}
 
     public Guid PerfilId { get; private set; }
     public virtual Perfil Perfil { get; set; }
 
-    public Guid UsuarioId { get; set; }
+    public Guid UsuarioId { get; private set; }
     public virtual Usuario Usuario { get; set; }
 
     public virtual Medico Medico { get; set; }

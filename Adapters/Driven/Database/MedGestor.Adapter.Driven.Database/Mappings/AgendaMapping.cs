@@ -31,6 +31,10 @@ public class AgendaMapping : IEntityTypeConfiguration<Agenda>
         builder.Property(x => x.Valor)
             .HasColumnName("Agd_Valor")
             .IsRequired();
+
+        builder.HasMany(x => x.Consultas)
+            .WithOne(x => x.Agenda)
+            .HasForeignKey(x => x.AgendaId);
         
         builder.Ignore(x => x.ValidationResult);
         builder.Ignore(x => x.ClassLevelCascadeMode);

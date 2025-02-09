@@ -25,6 +25,10 @@ public class PacienteMapping : IEntityTypeConfiguration<Paciente>
             .HasForeignKey<Paciente>(s => s.PessoaId)
             .IsRequired();
         
+        builder.HasMany(x => x.Consultas)
+            .WithOne(x => x.Paciente)
+            .HasForeignKey(x => x.PacienteId);
+        
         builder.Ignore(x => x.ValidationResult);
         builder.Ignore(x => x.ClassLevelCascadeMode);
         builder.Ignore(x => x.RuleLevelCascadeMode);

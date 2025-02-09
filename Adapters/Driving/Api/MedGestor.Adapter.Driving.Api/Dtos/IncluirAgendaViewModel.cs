@@ -10,9 +10,9 @@ public class IncluirAgendaViewModel
     [Required]
     public int Duracao { get; set; }
 
-    public DateTimeOffset? DataInicio { get; set; }
+    public DateTimeOffset DataInicio { get; set; }
 
-    public DateTimeOffset? DataFim { get; set; }
+    public DateTimeOffset DataFim { get; set; }
 
     [Required]
     public decimal Valor { get; set; }

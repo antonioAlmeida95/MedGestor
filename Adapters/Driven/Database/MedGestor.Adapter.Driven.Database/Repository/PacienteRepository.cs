@@ -16,18 +16,6 @@ public class PacienteRepository : BaseRepository, IPacienteRepository
         return await Commit();
     }
 
-    public async Task<bool> AtualizarPacienteAsync(Paciente paciente)
-    {
-        Context.Update(paciente);
-        return await Commit();
-    }
-
-    public async Task<bool> RemoverPacienteAsync(Paciente paciente)
-    {
-        Context.Remove(paciente);
-        return await Commit();
-    }
-
     public async Task<Paciente?> ObterPacientePorFiltroAsync(Expression<Func<Paciente, bool>> predicate,
         bool track = false) => await Query(predicate, track: track).FirstOrDefaultAsync();
 }

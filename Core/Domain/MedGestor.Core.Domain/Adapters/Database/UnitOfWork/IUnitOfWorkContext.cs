@@ -14,6 +14,7 @@ public interface IUnitOfWorkContext
     DbSet<PerfilPermissao> PerfilPermissao { get; }
     DbSet<Permissao> Permissao { get; }
     DbSet<Usuario> Usuario { get; }
+    DbSet<Consulta> Consulta { get; }
 
     DatabaseFacade GetDatabase();
     

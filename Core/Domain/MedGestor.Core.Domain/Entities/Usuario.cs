@@ -6,7 +6,7 @@ namespace MedGestor.Core.Domain.Entities;
 public class Usuario : EntidadeBase<Usuario>
 {
     [MaxLength(100)]
-    public string Email { get; }
+    public string Email { get; private set;}
 
     [MaxLength(100)]
     public string Senha { get; private set; }

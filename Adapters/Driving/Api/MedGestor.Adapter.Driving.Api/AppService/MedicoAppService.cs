@@ -23,4 +23,11 @@ public class MedicoAppService : IMedicoAppService
         var medicoInserido = await _medicoService.IncluirMedico(model);
         return medicoInserido;
     }
+
+    public async Task<IEnumerable<MedicoViewModel>> ObterMedicosPorFiltrosAsync(string? especialidade,
+        string? nome, string? crm)
+    {
+        var medicos = await _medicoService.ObterMedicosPorFiltroAsync(especialidade, nome, crm);
+        return medicos.Any() ? _mapper.Map<IEnumerable<MedicoViewModel>>(medicos) : [];
+    }
 }

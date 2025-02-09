@@ -6,7 +6,8 @@ namespace MedGestor.Core.Domain.Adapters.Database.Repository;
 public interface IMedicoRepository
 {
     Task<bool> IncluirMedicoAsync(Medico medico);
-    Task<bool> AtualizaMedicoAsync(Medico medico);
-    Task<bool> RemoverMedicoAsync(Medico medico);
     Task<Medico?> ObterMedicoPorFiltroAsync(Expression<Func<Medico, bool>> predicate, bool track = false);
+    
+    Task<IEnumerable<Medico>> ObterMedicosPorFiltroAsync(Expression<Func<Medico, bool>> predicate,
+        int? skip = null, int? take = null, bool track = false);
 }

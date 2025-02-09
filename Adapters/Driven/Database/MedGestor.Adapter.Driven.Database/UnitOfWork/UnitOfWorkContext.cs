@@ -18,7 +18,8 @@ public partial class UnitOfWorkContext : DbContext, IUnitOfWorkContext
     public DbSet<PerfilPermissao> PerfilPermissao { get; set; }
     public DbSet<Permissao> Permissao { get; set; }
     public DbSet<Usuario> Usuario { get; set; }
-    
+    public DbSet<Consulta> Consulta { get; set; }
+
     private string? _connectionString;
     
     public UnitOfWorkContext(string? connectionString = null) => _connectionString = connectionString;
@@ -35,5 +36,6 @@ public partial class UnitOfWorkContext : DbContext, IUnitOfWorkContext
         modelBuilder.ApplyConfiguration(new PerfilMapping());
         modelBuilder.ApplyConfiguration(new PermissaoMapping());
         modelBuilder.ApplyConfiguration(new PerfilPermissaoMapping());
+        modelBuilder.ApplyConfiguration(new ConsultaMapping());
     }
 }

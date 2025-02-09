@@ -15,19 +15,15 @@ public class MedicoRepository : BaseRepository, IMedicoRepository
         await Context.AddAsync(medico);
         return await Commit();
     }
-
-    public async Task<bool> AtualizaMedicoAsync(Medico medico)
-    {
-        Context.Update(medico);
-        return await Commit();
-    }
-
-    public async Task<bool> RemoverMedicoAsync(Medico medico)
-    {
-        Context.Remove(medico);
-        return await Commit();
-    }
-
     public async Task<Medico?> ObterMedicoPorFiltroAsync(Expression<Func<Medico, bool>> predicate, bool track = false)
         => await Query(predicate, track: track).FirstOrDefaultAsync();
+
+    public async Task<IEnumerable<Medico>> ObterMedicosPorFiltroAsync(Expression<Func<Medico, bool>> predicate,
+        int? skip = null, int? take = null, bool track = false)
+        => skip is not null && take is not null
+            ? await Query(predicate, take: take, skip: skip, track: track, include: i => i.Include(p => p.Agendas)
+                    .Include(p => p.Pessoa)).ToListAsync()
+            : await Query(predicate, track: track, include: i => i.Include(p => p.Agendas)
+                .Include(p => p.Pessoa)).ToListAsync();
+
 }

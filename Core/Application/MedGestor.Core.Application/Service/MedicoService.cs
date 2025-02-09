@@ -1,5 +1,7 @@
+using System.Linq.Expressions;
 using System.Security.Authentication;
 using MedGestor.Core.Application.Models;
+using MedGestor.Core.Application.Utils;
 using MedGestor.Core.Domain.Adapters.Database.UnitOfWork;
 using MedGestor.Core.Domain.Entities;
 using MedGestor.Core.Domain.Entities.Constantes;
@@ -35,7 +37,14 @@ public class MedicoService : IMedicoService
 
         return await _unitOfWork.Medico.IncluirMedicoAsync(medico);
     }
-    
+
+    public Task<IEnumerable<Medico>> ObterMedicosPorFiltroAsync(string? especialidade,
+        string? nome, string? crm)
+    {
+        var filtro = CriarPredicate(especialidade, nome, crm);
+        return _unitOfWork.Medico.ObterMedicosPorFiltroAsync(filtro);
+    }
+
     private async Task<bool> ObterPermissaoParaOperacao()
     {
         var user = _httpContextAccessor.HttpContext.User?.Identity?.Name;
@@ -58,5 +67,22 @@ public class MedicoService : IMedicoService
     {
         var encrypt = BCrypt.Net.BCrypt.HashPassword(medico.Pessoa.Usuario.Senha, _credentialSettings.Salt);
         medico.Pessoa.Usuario.AlterarSenha(encrypt);
+    }
+
+    private Expression<Func<Medico, bool>> CriarPredicate(string? especialidade,
+        string? nome, string? crm)
+    {
+        var predicate = ExpressionExtension.Query<Medico>();
+
+        if (!string.IsNullOrEmpty(especialidade))
+            predicate = predicate.And(p => p.Especialidade.ToUpper().Contains(especialidade.ToUpper()));
+
+        if (!string.IsNullOrEmpty(nome))
+            predicate = predicate.And(p => p.Pessoa.Nome.ToUpper().Contains(nome.ToUpper()));
+
+        if (!string.IsNullOrEmpty(crm))
+            predicate = predicate.And(p => p.Crm.Contains(crm));
+
+        return predicate;
     }
 }

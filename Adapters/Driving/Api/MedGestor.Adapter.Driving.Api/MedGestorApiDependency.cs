@@ -15,5 +15,6 @@ public static class MedGestorApiDependency
         services.AddScoped<IAgendaAppService, AgendaAppService>();
         services.AddScoped<IMedicoAppService, MedicoAppService>();
         services.AddScoped<IPacienteAppService, PacienteAppService>();
+        services.AddScoped<IConsultaAppService, ConsultaAppService>();
     }
 }
