@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using MedGestor.Adapter.Driven.Database;
+using MedGestor.Adapter.Driving.Api.Authorization;
 using MedGestor.Core.Application;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,6 +39,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         //Injeção de Dependencias Adapters
+        services.AddMemoryCache();
         services.AddMedGestorApiModule();
         services.AddMedGestorDatabaseModule(Configuration);
         
@@ -111,10 +113,14 @@ public class Startup
                     ValidateAudience = false
                 };
             });
+        var apiKey = Configuration.GetSection("Credentials:Secret:ApiKey").Value ?? string.Empty;
+        services.AddAuthorizationBuilder()
+            .AddPolicy("ApiKeyPolicy", policy =>
+                policy.Requirements.Add(new ApiKeyRequirement(apiKey)));
     }
     
     /// <summary>
-    /// Método de definições e configurações do APP.
+    /// Método de definições e configurações do app.
     /// </summary>
     /// <param name="app"></param>
     /// <param name="env"></param>
@@ -125,7 +131,7 @@ public class Startup
             app.UseDeveloperExceptionPage();
             app.UseCors("SiteCorsPolicy");
         }
-            
+        
         app.UseHttpsRedirection();
         app.UseSwagger();
         app.UseSwaggerUI(c =>

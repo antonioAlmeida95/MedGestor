@@ -1,6 +1,8 @@
 using MedGestor.Adapter.Driving.Api.AppService;
 using MedGestor.Adapter.Driving.Api.AppService.Interfaces;
+using MedGestor.Adapter.Driving.Api.Authorization;
 using MedGestor.Adapter.Driving.Api.Mappings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MedGestor.Adapter.Driving.Api;
@@ -16,5 +18,6 @@ public static class MedGestorApiDependency
         services.AddScoped<IMedicoAppService, MedicoAppService>();
         services.AddScoped<IPacienteAppService, PacienteAppService>();
         services.AddScoped<IConsultaAppService, ConsultaAppService>();
+        services.AddSingleton<IAuthorizationHandler, ApiKeyRequirementHandler>();
     }
 }
